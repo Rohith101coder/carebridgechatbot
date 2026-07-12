@@ -82,7 +82,7 @@ public List<String> retrieve(
 public ChatResponse chat(@RequestBody ChatRequest request){
 
     return new ChatResponse(
-            chatService.chat(request.getMessage())
+            chatService.chat(request)
     );
 
 }

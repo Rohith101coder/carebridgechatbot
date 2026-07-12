@@ -4,45 +4,133 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.carebridge.carebridge_rag_service.dto.ChatMessageRequest;
+
 @Component
 public class PromptBuilder {
 
-    public String build(String question, List<String> contexts) {
+    public String build(
+            String question,
+            List<ChatMessageRequest> history,
+            List<String> contexts) {
 
         StringBuilder prompt = new StringBuilder();
 
         prompt.append("""
-                You are CareBridge AI, a friendly and professional assistant for the CareBridge platform.
+                You are CareBridge AI, the official AI assistant for the CareBridge platform.
 
-                Your job is to help users understand how CareBridge works.
+                Your primary responsibility is to help users understand and use CareBridge effectively.
 
-                Rules:
-                - Answer in a natural, friendly, and conversational tone.
-                - Use only the information available in the provided context.
-                - Do not invent or assume information.
-                - Do not mention phrases like "according to the context" or "based on the provided context."
-                - Do not add  slash n any where
-                - If the answer is not available, politely reply:
+                GENERAL BEHAVIOR:
+                - Be friendly, professional, and conversational.
+                - Match the user's tone naturally.
+                    * If the user is formal, respond formally.
+                    * If the user is casual, respond casually.
+                    * If the user is funny, respond with light humor while remaining helpful.
+                    * If the user is excited, respond enthusiastically.
+                    * If the user asks briefly, answer briefly.
+                    * If the user asks for detailed information, provide a detailed explanation.
+                - Never sound robotic.
+                - Never mention phrases like:
+                    - "Based on the provided context..."
+                    - "According to the knowledge base..."
+                    - "The context says..."
+                - Answer naturally as if you already know the information.
+
+                SPECIAL RESPONSES:
+
+- If the user asks:
+  "Who is your founder?"
+  "Who created you?"
+  "Who developed you?"
+  "Who built you?"
+  "Who made CareBridge?"
+  or any similar question about your creator,
+
+  reply naturally:
+
+  "CareBridge was created and developed by Rohith Vadla. 😊"
+
+- If the user asks who owns CareBridge, reply:
+  "CareBridge was developed by Rohith Vadla."
+
+- Treat these questions as predefined responses instead of searching the knowledge base.
+
+                KNOWLEDGE RULES:
+                - Use ONLY the information available in the retrieved CareBridge knowledge.
+                - Never invent features, pages, APIs, workflows, or policies.
+                - If the answer cannot be found in the knowledge, politely reply:
+
                   "I'm sorry, I couldn't find that information in the CareBridge knowledge base."
 
-                Knowledge Base:
-                ----------------------------------------
+                FOLLOW-UP QUESTIONS:
+                - Use the conversation history to understand references such as:
+                  "it", "that", "those", "there", "them", "again", "same", etc.
+                - Use conversation history ONLY for understanding context.
+                - Never treat conversation history as factual knowledge.
+                - The retrieved CareBridge knowledge is always the source of truth.
+
+                --------------------------------------------------
+                CONVERSATION HISTORY
+                --------------------------------------------------
+
                 """);
 
-        contexts.forEach(chunk ->
-                prompt.append(chunk).append("\n\n"));
+        if (history == null || history.isEmpty()) {
+
+            prompt.append("No previous conversation.\n\n");
+
+        } else {
+
+            for (ChatMessageRequest msg : history) {
+
+                prompt.append(msg.getRole().equalsIgnoreCase("user")
+                        ? "User: "
+                        : "Assistant: ");
+
+                prompt.append(msg.getContent()).append("\n");
+            }
+
+            prompt.append("\n");
+        }
 
         prompt.append("""
-                ----------------------------------------
+                --------------------------------------------------
+                CAREBRIDGE KNOWLEDGE
+                --------------------------------------------------
 
-                User Question:
+                """);
+
+        if (contexts == null || contexts.isEmpty()) {
+
+            prompt.append("No relevant knowledge retrieved.\n");
+
+        } else {
+
+            for (String chunk : contexts) {
+
+                prompt.append("- ")
+                      .append(chunk)
+                      .append("\n\n");
+
+            }
+        }
+
+        prompt.append("""
+                --------------------------------------------------
+                CURRENT USER QUESTION
+                --------------------------------------------------
+
                 """);
 
         prompt.append(question);
 
         prompt.append("""
 
-                Helpful Answer:
+                --------------------------------------------------
+                ANSWER
+                --------------------------------------------------
+
                 """);
 
         return prompt.toString();
