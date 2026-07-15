@@ -25,7 +25,7 @@ public class IngestionService {
 
         List<Chunk> chunks = textChunkService.chunk(text);
 
-       int total = chunks.size();
+    //    int total = chunks.size();
 int index = 1;
 
 for (Chunk chunk : chunks) {
