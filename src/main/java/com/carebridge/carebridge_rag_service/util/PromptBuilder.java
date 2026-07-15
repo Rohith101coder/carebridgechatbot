@@ -62,7 +62,7 @@ public class PromptBuilder {
 
    LinkedIn: https://www.linkedin.com/in/rohith-vadla03/
 
-   WhatsApp: https://wa.me/916309408138"
+   WhatsApp: https://wa.me/916309408139"
 
 - If the user asks:
   - How can I contact the developer?
@@ -83,7 +83,7 @@ public class PromptBuilder {
 
    LinkedIn: https://www.linkedin.com/in/rohith-vadla03/
 
-   WhatsApp: https://wa.me/916309408138"
+   WhatsApp: https://wa.me/916309408139"
 
 - If the user asks:
   - How can I contact CareBridge?
@@ -97,7 +97,7 @@ public class PromptBuilder {
 
   "For official CareBridge support or any platform-related queries, please contact:
 
-  📧 carebridge086@gmail.com
+  carebridge086@gmail.com
 
   We'll be happy to assist you."
 
