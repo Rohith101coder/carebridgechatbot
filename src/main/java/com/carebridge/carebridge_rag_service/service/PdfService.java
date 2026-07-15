@@ -1,6 +1,7 @@
 package com.carebridge.carebridge_rag_service.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -13,15 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class PdfService {
-     public String extractText() {
+    public String extractText() {
 
-        try {
+    try {
 
-            ClassPathResource resource =
-                    new ClassPathResource("pdf/CareBridge.pdf");
+        ClassPathResource resource =
+                new ClassPathResource("pdf/CareBridge.pdf");
+
+        try (InputStream inputStream = resource.getInputStream()) {
 
             PDDocument document =
-                    Loader.loadPDF(resource.getFile());
+                    Loader.loadPDF(inputStream.readAllBytes());
 
             PDFTextStripper stripper =
                     new PDFTextStripper();
@@ -32,12 +35,11 @@ public class PdfService {
             document.close();
 
             return text;
-
-        } catch (IOException e) {
-
-            throw new RuntimeException(e);
-
         }
 
+    } catch (IOException e) {
+
+        throw new RuntimeException(e);
     }
+}
 }
