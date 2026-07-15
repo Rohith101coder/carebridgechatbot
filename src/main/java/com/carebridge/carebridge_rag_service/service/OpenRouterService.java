@@ -34,6 +34,8 @@ public class OpenRouterService {
     private String model;
 
     public String chat(String prompt) {
+        
+        // System.out.println("apikey:"+apiKey);
 
         OpenRouterRequest request = new OpenRouterRequest(
 

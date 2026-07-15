@@ -32,7 +32,7 @@ for (Chunk chunk : chunks) {
 
     try {
 
-        System.out.println("Embedding chunk " + index + " / " + total);
+        // System.out.println("Embedding chunk " + index + " / " + total);
 
         chunk.setEmbedding(
                 embeddingService.generateEmbedding(chunk.getContent())
