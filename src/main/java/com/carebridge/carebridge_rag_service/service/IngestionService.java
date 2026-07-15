@@ -25,19 +25,31 @@ public class IngestionService {
 
         List<Chunk> chunks = textChunkService.chunk(text);
 
-        for(Chunk chunk : chunks){
+       int total = chunks.size();
+int index = 1;
 
-            chunk.setEmbedding(
+for (Chunk chunk : chunks) {
 
-                    embeddingService.generateEmbedding(
+    try {
 
-                            chunk.getContent()
-                    )
-            );
+        System.out.println("Embedding chunk " + index + " / " + total);
 
-            vectorStoreService.saveChunk(chunk);
+        chunk.setEmbedding(
+                embeddingService.generateEmbedding(chunk.getContent())
+        );
 
-        }
+        vectorStoreService.saveChunk(chunk);
+
+    } catch (Exception e) {
+
+        System.out.println("Failed chunk " + index);
+
+        e.printStackTrace();
+
+    }
+
+    index++;
+}
 
         return "Successfully Indexed " + chunks.size() + " Chunks";
 

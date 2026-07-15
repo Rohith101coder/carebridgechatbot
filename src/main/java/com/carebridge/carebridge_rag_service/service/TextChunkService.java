@@ -11,7 +11,7 @@ import com.carebridge.carebridge_rag_service.model.Chunk;
 @Service
 public class TextChunkService {
     
-     private static final int MAX_CHUNK_SIZE = 800;
+     private static final int MAX_CHUNK_SIZE = 1200;
 
     public List<Chunk> chunk(String text) {
 
