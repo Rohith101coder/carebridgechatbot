@@ -23,7 +23,8 @@ public class CorsConfig {
                                 "https://YOUR-FRONTEND.onrender.com",
                                 "https://carebridge-drab.vercel.app/",
                                 "https://carebridgeproagent.vercel.app/",
-                                "https://agenticcarebridge.vercel.app/"
+                                "https://agenticcarebridge.vercel.app/",
+                                "https://agenticcarebridge.netlify.app/"
                         )
                         .allowedMethods("*")
                         .allowedHeaders("*");
