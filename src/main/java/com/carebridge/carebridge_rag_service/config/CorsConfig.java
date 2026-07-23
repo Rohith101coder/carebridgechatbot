@@ -21,7 +21,9 @@ public class CorsConfig {
                         .allowedOrigins(
                                 "http://localhost:5173",
                                 "https://YOUR-FRONTEND.onrender.com",
-                                "https://carebridge-drab.vercel.app/"
+                                "https://carebridge-drab.vercel.app/",
+                                "https://carebridgeproagent.vercel.app/",
+                                "https://agenticcarebridge.vercel.app/"
                         )
                         .allowedMethods("*")
                         .allowedHeaders("*");
